@@ -2,11 +2,12 @@ services:
 
   synapse:
     image: ghcr.io/element-hq/synapse:v1.128.0
+    container_name: synapse
     restart: unless-stopped
     environment:
       - SYNAPSE_CONFIG_PATH=/data/homeserver.yaml
     volumes:
-      - ${DATA_DIR:-./data}/data:/data
+      - ${DATA_DIR:-./data}/synapse:/data
     depends_on:
       db:
         condition: service_healthy
@@ -14,10 +15,10 @@ services:
       - 8448:8448
 
   db:
-    image: postgres:17.5-bookworm
+    image: postgres:${POSTGRES_VERSION:-17.5}
     environment:
-      POSTGRES_DB: ${POSTGRES_DB:-synapse}
-      POSTGRES_USER: ${POSTGRES_USER:-synapse}
+      POSTGRES_DB: synapse
+      POSTGRES_USER: synapse
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-synapse}
       # ensure the database gets created correctly
       # https://matrix-org.github.io/synapse/latest/postgres.html#set-up-database
@@ -25,7 +26,43 @@ services:
     volumes:
       - ${DATA_DIR:-./data}/db:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-synapse}"]
+      test: ["CMD-SHELL", "pg_isready -U synapse"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 30s
+  
+  mas:
+    image: ghcr.io/element-hq/matrix-authentication-service:0.16.0
+    container_name: mas
+    restart: unless-stopped
+    command: ["server", "--config", "/data/config.yaml"]
+    volumes:
+      - ${DATA_DIR:-./data}/mas/config.yaml:/data/config.yaml:ro
+    depends_on:
+      mas-db:
+        condition: service_healthy
+  
+  syn2mas:
+    restart: "no"
+    image: ghcr.io/element-hq/matrix-authentication-service/syn2mas:0.14.0
+    volumes:
+      - ${DATA_DIR:-./data}/mas/config.yaml:/mas.yaml:ro
+      - ${DATA_DIR:-./data}/synapse/homeserver.yaml:/homeserver.yaml:ro
+
+  mas-db:
+    image: postgres:${POSTGRES_VERSION:-17.5}
+    environment:
+      POSTGRES_DB: mas
+      POSTGRES_USER: mas
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-synapse}
+      # ensure the database gets created correctly
+      # https://matrix-org.github.io/synapse/latest/postgres.html#set-up-database
+      POSTGRES_INITDB_ARGS: "--encoding=UTF-8 --lc-collate=C --lc-ctype=C"
+    volumes:
+      - ${DATA_DIR:-./data}/mas-db:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U mas"]
       interval: 10s
       timeout: 5s
       retries: 3
