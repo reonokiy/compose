@@ -1,0 +1,7 @@
+services:
+  perverse:
+    build:
+      context: https://github.com/reonokiy/perverse.git
+      dockerfile: Dockerfile
+    container_name: perverse
+    restart: unless-stopped
