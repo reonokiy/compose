@@ -5,3 +5,7 @@ services:
       dockerfile: Dockerfile
     container_name: perverse
     restart: unless-stopped
+    environment:
+      LOG_LEVEL: ${LOG_LEVEL:-INFO}
+      MASTODON_INSTANCE: ${MASTODON_INSTANCE}
+      MASTODON_ACCESS_TOKEN: ${MASTODON_ACCESS_TOKEN}
