@@ -11,10 +11,10 @@ services:
       FORGEJO__cache__ADAPTER: redis
       FORGEJO__cache__HOST: redis://redis:6379
       FORGEJO__server__PROTOCOL: http
-      FORGEJO__server__DOMAIN: git.nokiy.net
+      FORGEJO__server__DOMAIN: ${DOMAIN}
       FORGEJO__server__DISABLE_SSH: true
       FORGEJO__server__LFS_START_SERVER: true
-      FORGEJO__server__ROOT_URL: http://git.nokiy.net
+      FORGEJO__server__ROOT_URL: https://${DOMAIN}
       FORGEJO__storage__STORAGE_TYPE: minio
       FORGEJO__storage__SERVER_DIRECT: true
       FORGEJO__storage__MINIO_BUCKET: ${S3_BUCKET}
