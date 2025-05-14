@@ -1,5 +1,5 @@
 services:
-  server:
+  forgejo:
     image: codeberg.org/forgejo/forgejo:${FORGEJO_VERSION:-11.0.1}
     container_name: forgejo
     environment:
@@ -46,7 +46,7 @@ services:
       - /etc/localtime:/etc/localtime:ro
     ports:
       - '3000:3000'
-      - '222:22'
+      # - '222:22'
 
   postgres:
     image: postgres:${POSTGRES_VERSION:-17.5}
