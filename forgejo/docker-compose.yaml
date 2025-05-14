@@ -40,6 +40,12 @@ services:
       FORGEJO__indexer__REPO_INDEXER_ENABLED: true
       FORGEJO__queue__TYPE: redis
       FORGEJO__queue__CONN_STR: redis://redis:6379
+      FORGEJO__session__PROVIDER: redis
+      FORGEJO__session__PROVIDER_CONFIG: redis://redis:6379
+      FORGEJO__session__COOKIE_SECURE: true
+      FORGEJO__session__COOKIE_NAME: forgejo_session
+      FORGEJO__session__DOMAIN: https://${DOMAIN}
+      
     restart: always
     volumes:
       - ${DATA_DIR:-./data}/forgejo:/data:Z
