@@ -21,6 +21,7 @@ services:
     image: timberio/vector:${VECTOR_VERSION:-0.46.1-debian}
     container_name: vector
     restart: always
+    command: [ "--config", "/etc/vector/vector.toml" ]
     environment:
       OPENOBSERVE_URL: ${OPENOBSERVE_URL}
       OPENOBSERVE_USER: ${OPENOBSERVE_USER}
