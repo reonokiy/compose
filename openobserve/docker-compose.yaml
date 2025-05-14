@@ -1,0 +1,18 @@
+services:
+  openobserve:
+    image: public.ecr.aws/zinclabs/openobserve:${ZO_VERSION:-v0.14.7}
+    container_name: openobserve
+    environment:
+      ZO_HTTP_PORT: 5080
+      ZO_GRPC_PORT: 5081
+      ZO_DATA_DIR: /data
+      ZO_ROOT_USER_EMAIL: ${EMAIL}
+      ZO_ROOT_USER_PASSWORD: ${PASSWORD}
+      ZO_WEB_URL: https://${DOMAIN}
+      ZO_TELEMETRY: false
+    restart: always
+    volumes:
+      - ${DATA_DIR:-./data}/openobserve:/data:Z
+    ports:
+      - 80:5080
+      - 5081:5081
