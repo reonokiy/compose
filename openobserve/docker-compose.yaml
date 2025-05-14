@@ -27,7 +27,7 @@ services:
       OPENOBSERVE_USER: ${OPENOBSERVE_USER}
       OPENOBSERVE_PASSWORD: ${OPENOBSERVE_PASSWORD}
     volumes:
-      - ${DATA_DIR:-./data}/vector.toml:/etc/vector/vector.toml:ro
+      - ${VECTOR_CONFIG_PATH:-./vector.toml}:/etc/vector/vector.toml:ro
       - ${DATA_DIR:-./data}/vector:/var/lib/vector:Z
       - /var/run/docker.sock:/var/run/docker.sock
     
