@@ -17,6 +17,7 @@ services:
       FORGEJO__server__ROOT_URL: http://git.nokiy.net
       FORGEJO__storage__STORAGE_TYPE: minio
       FORGEJO__storage__SERVER_DIRECT: true
+      FORGEJO__storage__MINIO_BUCKET: ${S3_BUCKET}
       FORGEJO__storage__MINIO_ENDPOINT: ${S3_ENDPOINT}
       FORGEJO__storage__MINIO_LOCATION: ${S3_LOCATION}
       FORGEJO__storage__MINIO_USE_SSL: ${S3_USE_SSL:-true}
@@ -47,6 +48,11 @@ services:
     ports:
       - '3000:3000'
       # - '222:22'
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
 
   postgres:
     image: postgres:${POSTGRES_VERSION:-17.5}
