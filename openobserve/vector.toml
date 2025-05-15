@@ -3,12 +3,16 @@ data_dir = "/var/lib/vector"
 [api]
 enabled = false
 
-[sources.observe-nokiy-net]
+[sources.observe_nokiy_net_logs]
 type = "docker_logs"
 include_containers = ["openobserve"]
 
+[sources.observe_nokiy_net_metrics]
+type = "prometheus_scrape"
+endpoints = ["http://localhost:5080/metrics"]
+
 [sinks.openobserve]
-inputs = ["observe-nokiy-net"]
+inputs = ["observe_nokiy_net_logs", "observe_nokiy_net_metrics"]
 type = "http"
 uri = "${OPENOBSERVE_URL}"
 method = "post"
