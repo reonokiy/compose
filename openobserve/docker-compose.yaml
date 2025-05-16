@@ -23,9 +23,9 @@ services:
     restart: always
     command: [ "--config", "/etc/vector/vector.toml" ]
     environment:
-      OTEL_URI: ${OTEL_URI}
-      OTEL_USER: ${OTEL_USER}
-      OTEL_PASSWORD: ${OTEL_PASSWORD}
+      OTLP_URI: ${OTLP_URI}
+      OTLP_USER: ${OTLP_USER}
+      OTLP_PASSWORD: ${OTLP_PASSWORD}
     volumes:
       - ${VECTOR_CONFIG_PATH:-./vector.toml}:/etc/vector/vector.toml:ro
       - ${DATA_DIR:-./data}/vector:/var/lib/vector:Z

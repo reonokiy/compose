@@ -11,22 +11,12 @@ include_containers = ["openobserve"]
 type = "prometheus_scrape"
 endpoints = ["http://openobserve:5080/metrics"]
 
-[sinks.otel_logs]
+[sinks.observe_nokiy_net]
 type = "opentelemetry"
-encoding = "json"
-inputs = ["observe_nokiy_net_logs"]
+inputs = ["observe_nokiy_net_logs", "observe_nokiy_net_metrics"]
 protocol.type = "http"
-protocol.uri = "${OTEL_URI}"
+protocol.uri = "${OTLP_URI}/api/default"
 protocol.auth.strategy = "basic"
-protocol.auth.user = "${OTEL_USER}"
-protocol.auth.password = "${OTEL_PASSWORD}"
-protocol.compression = "zstd"
-
-
-# [sinks.otel_metrics]
-# type = "opentelemetry"
-# inputs = ["my-source-or-transform-id"]
-
-# [sinks.otel_traces]
-# type = "opentelemetry"
-# inputs = ["my-source-or-transform-id"]
+protocol.auth.user = "${OTLP_USER}"
+protocol.auth.password = "${OTLP_PASSWORD}"
+protocol.headers.stream-name = "observe_nokiy_net"
