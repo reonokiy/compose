@@ -23,9 +23,9 @@ services:
     restart: always
     command: [ "--config", "/etc/vector/vector.toml" ]
     environment:
-      OPENOBSERVE_URL: ${OPENOBSERVE_URL}
-      OPENOBSERVE_USER: ${OPENOBSERVE_USER}
-      OPENOBSERVE_PASSWORD: ${OPENOBSERVE_PASSWORD}
+      OTEL_URI: ${OTEL_URI}
+      OTEL_USER: ${OTEL_USER}
+      OTEL_PASSWORD: ${OTEL_PASSWORD}
     volumes:
       - ${VECTOR_CONFIG_PATH:-./vector.toml}:/etc/vector/vector.toml:ro
       - ${DATA_DIR:-./data}/vector:/var/lib/vector:Z

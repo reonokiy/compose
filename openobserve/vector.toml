@@ -11,15 +11,22 @@ include_containers = ["openobserve"]
 type = "prometheus_scrape"
 endpoints = ["http://openobserve:5080/metrics"]
 
-[sinks.openobserve]
-inputs = ["observe_nokiy_net_logs", "observe_nokiy_net_metrics"]
-type = "http"
-uri = "${OPENOBSERVE_URL}"
-method = "post"
-auth.strategy = "basic"
-auth.user = "${OPENOBSERVE_USER}"
-auth.password = "${OPENOBSERVE_PASSWORD}"
-compression = "gzip"
-encoding.codec = "json"
-encoding.timestamp_format = "rfc3339"
-healthcheck.enabled = false
+[sinks.otel_logs]
+type = "opentelemetry"
+encoding = "json"
+inputs = ["observe_nokiy_net_logs"]
+protocol.type = "http"
+protocol.uri = "${OTEL_URI}"
+protocol.auth.strategy = "basic"
+protocol.auth.user = "${OTEL_USER}"
+protocol.auth.password = "${OTEL_PASSWORD}"
+protocol.compression = "zstd"
+
+
+# [sinks.otel_metrics]
+# type = "opentelemetry"
+# inputs = ["my-source-or-transform-id"]
+
+# [sinks.otel_traces]
+# type = "opentelemetry"
+# inputs = ["my-source-or-transform-id"]
