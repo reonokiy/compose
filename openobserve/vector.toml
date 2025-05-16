@@ -14,7 +14,7 @@ endpoints = ["http://openobserve:5080/metrics"]
 [sinks.openobserve_logs]
 inputs = ["observe_nokiy_net_logs"]
 type = "http"
-uri = "${OTLP_URI}/api/default/observe_nokiy_net_metrics/_json"
+uri = "${OTLP_URI}/api/default/observe_nokiy_net_logs/_json"
 method = "post"
 auth.strategy = "basic"
 auth.user = "${OTLP_USER}"
@@ -31,3 +31,5 @@ endpoint = "${OTLP_URI}/api/default/prometheus/api/v1/write"
 auth.strategy = "basic"
 auth.user = "${OTLP_USER}"
 auth.password = "${OTLP_PASSWORD}"
+compression = "snappy"
+healthcheck.enabled = false
