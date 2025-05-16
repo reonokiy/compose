@@ -9,7 +9,7 @@ include_containers = ["openobserve"]
 
 [sources.observe_nokiy_net_metrics]
 type = "prometheus_scrape"
-endpoints = ["http://openobserve:5080/metrics"]
+endpoints = ["${OTLP_URI}/metrics"]
 
 [sinks.observe_nokiy_net]
 type = "opentelemetry"
