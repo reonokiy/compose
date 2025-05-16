@@ -3,6 +3,12 @@ data_dir = "/var/lib/vector"
 [api]
 enabled = false
 
+[sources.internal_logs]
+type = "internal_logs"
+
+[sources.internal_metrics]
+type = "internal_metrics"
+
 [sources.observe_nokiy_net_logs]
 type = "docker_logs"
 include_containers = ["openobserve"]
@@ -12,7 +18,7 @@ type = "prometheus_scrape"
 endpoints = ["http://openobserve:5080/metrics"]
 
 [sinks.openobserve_logs]
-inputs = ["observe_nokiy_net_logs"]
+inputs = ["observe_nokiy_net_logs", "internal_logs"]
 type = "http"
 uri = "${OTLP_URI}/api/default/observe_nokiy_net_logs/_json"
 method = "post"
@@ -26,7 +32,7 @@ healthcheck.enabled = false
 
 [sinks.openobserve_metrics]
 type = "prometheus_remote_write"
-inputs = ["observe_nokiy_net_metrics"]
+inputs = ["observe_nokiy_net_metrics", "internal_metrics"]
 endpoint = "${OTLP_URI}/api/default/prometheus/api/v1/write"
 auth.strategy = "basic"
 auth.user = "${OTLP_USER}"
