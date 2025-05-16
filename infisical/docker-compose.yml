@@ -1,0 +1,66 @@
+services:
+  infisical:
+    container_name: infisical
+    restart: always
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    image: infisical/infisical:${INFISICAL_VERSION:-v0.129.0-postgres}
+    environment:
+      NODE_ENV: production
+      DB_CONNECTION_URI: postgres://infisical:${POSTGRES_PASSWORD:-infisical}@postgres:5432/infisical
+      REDIS_URL: redis://redis:6379
+      SITE_URL: ${SITE_URL:-http://localhost}
+      ENCRYPTION_KEY: ${ENCRYPTION_KEY:-6c1fe4e407b8911c104518103505b218}
+      AUTH_SECRET: ${AUTH_SECRET:-5lrMXKKWCVocS/uerPsl7V+TX/aaUaI7iDkgl3tSmLE=}
+      # SMTP_HOST: ${SMTP_HOST}
+      # SMTP_PORT: ${SMTP_PORT}
+      # SMTP_FROM_ADDRESS: ${SMTP_FROM_ADDRESS}
+      # SMTP_FROM_NAME: ${SMTP_FROM_NAME}
+      # SMTP_USERNAME: ${SMTP_USERNAME}
+      # SMTP_PASSWORD: ${SMTP_PASSWORD}
+    ports:
+      - 80:8080
+    networks:
+      - infisical
+
+  redis:
+    container_name: redis
+    image: redis:${REDIS_VERSION:-8.0.0}
+    restart: always
+    environment:
+      ALLOW_EMPTY_PASSWORD: yes
+    networks:
+      - infisical
+    volumes:
+      - ${DATA_DIR:-./data}/redis:/data
+    healthcheck:
+      test: ["CMD-SHELL", "redis-cli ping | grep PONG"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 30s
+
+  postgres:
+    container_name: postgres
+    image: postgres:${POSTGRES_VERSION:-14-alpine}
+    restart: always
+    environment:
+      POSTGRES_DB: infisical
+      POSTGRES_USER: infisical
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-infisical}
+    volumes:
+      - ${POSTGRES_VERSION:-./data}/postgres:/var/lib/postgresql/data
+    networks:
+      - infisical
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U infisical"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 30s
+
+networks:
+  infisical:
