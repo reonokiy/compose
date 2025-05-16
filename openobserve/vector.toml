@@ -13,9 +13,9 @@ endpoints = ["http://openobserve:5080/metrics"]
 
 [sinks.observe_nokiy_net]
 type = "opentelemetry"
-encoding.codec = "json"
 inputs = ["observe_nokiy_net_logs", "observe_nokiy_net_metrics"]
 protocol.type = "http"
+protocol.encoding.codec = "json"
 protocol.uri = "${OTLP_URI}/api/default"
 protocol.auth.strategy = "basic"
 protocol.auth.user = "${OTLP_USER}"
