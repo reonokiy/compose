@@ -1,6 +1,7 @@
 services:
   umami:
     image: ghcr.io/umami-software/umami:postgresql-v2.18.1
+    container_name: umami
     ports:
       - 80:3000
     environment:
