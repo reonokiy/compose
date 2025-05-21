@@ -54,7 +54,7 @@ services:
       - "${HTTP_PORT:-9000}:9000"
       - "${HTTPS_PORT:-9443}:9443"
     depends_on:
-      postgresql:
+      postgres:
         condition: service_healthy
       redis:
         condition: service_healthy
