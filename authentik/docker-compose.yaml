@@ -27,7 +27,7 @@ services:
     volumes:
       - ${DATA_DIR:-./data}/redis:/data
   server:
-    image: ghcr.io/goauthentik/server:${AUTHENTIK_VERSION:-2025.4.0}
+    image: ghcr.io/goauthentik/server:${AUTHENTIK_VERSION:-2025.4.1}
     restart: always
     user: root
     command: server
@@ -57,7 +57,7 @@ services:
       redis:
         condition: service_healthy
   worker:
-    image: ghcr.io/goauthentik/server:${AUTHENTIK_VERSION:-2025.4.0}
+    image: ghcr.io/goauthentik/server:${AUTHENTIK_VERSION:-2025.4.1}
     restart: always
     user: root
     command: worker
