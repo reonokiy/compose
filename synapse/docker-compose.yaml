@@ -1,6 +1,5 @@
 services:
-
-  synapse:
+  homeserver:
     image: ghcr.io/element-hq/synapse:v1.130.0
     container_name: synapse
     restart: unless-stopped
