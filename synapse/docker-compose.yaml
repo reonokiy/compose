@@ -5,7 +5,9 @@ services:
     container_name: synapse
     restart: unless-stopped
     environment:
-      - SYNAPSE_CONFIG_PATH=/data/homeserver.yaml
+      SYNAPSE_CONFIG_PATH: /data/homeserver.yaml
+      UID: 1000
+      GID: 1000
     volumes:
       - ${DATA_DIR:-./data}/synapse:/data
       - ${DATA_DIR:-./data}/homeserver.yaml:/data/homeserver.yaml:ro
